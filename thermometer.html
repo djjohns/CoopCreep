@@ -1,0 +1,73 @@
+{{render_template('header.html')}}
+<div class="container m-3 p-3">
+    <head>
+    <title>Thermometer</title>
+    <style>
+        /* Customize the thermometer appearance */
+        .thermometer-container {
+            width: 75px;
+            height: 300px; /* Adjust the height to match the line marker scale */
+            background-color: #ccc;
+            position: relative;
+            display: flex; /* Use flexbox for layout */
+            align-items: flex-end; /* Align child elements to the bottom */
+        }
+        #mercury {
+            background-color: red;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50%;
+        }
+        #tempLabel {
+            text-align: center;
+            font-size: 16px;
+            margin-left: 5px;
+        }
+        /* Line markers style */
+        .line-marker {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            border-top: 1px solid black;
+            pointer-events: none; /* Prevent the markers from interfering with mouse events */
+        }
+        /* Line marker labels style */
+        .line-marker-label {
+            position: absolute;
+            right: 100%; /* Position to the left of the thermometer */
+            transform: translateX(-5px); /* Slightly adjust for better alignment */
+            font-size: 12px;
+            pointer-events: none; /* Prevent the labels from interfering with mouse events */
+        }
+    </style>
+    </head>
+    <body>
+        <div class="thermometer-container">
+            <div id="mercury" style="position: absolute; bottom: 0; width: 100%; background-color: #ff0000; height: {{ current_temp }}%;"></div>
+        </div>
+        <div id="tempLabel">Current Temperature: {{ current_temp }}{{ degree_symbol }} F</div>
+        <script>
+            // JavaScript code for setting the height of the mercury div
+            var height = "{{ current_temp }}";
+            var mercury = document.getElementById("mercury");
+            mercury.style.height = height;
+    
+            // JavaScript code for adding line markers
+            var thermometer = document.getElementsByClassName("thermometer-container")[0];
+            var markerHeight = 30; // Height of each line marker in pixels
+            var numMarkers = 10; // Number of line markers (0 to 100 in increments of 10 degrees)
+    
+            for (var i = 0; i <= numMarkers; i++) {
+                var marker = document.createElement("div");
+                marker.classList.add("line-marker");
+                marker.style.height = markerHeight + "px";
+                marker.style.bottom = i * (100 / numMarkers) + "%";
+                thermometer.appendChild(marker);
+            }
+        </script>
+    </body>
+</div>
+
+{{render_template('footer.html')}}
+
